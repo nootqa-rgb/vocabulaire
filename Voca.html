@@ -1,1 +1,845 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Vocabulaire – الدَّرْسُ الأَوَّلُ: التَّحِيَّةُ وَالتَّعَارُفُ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Police arabe (si pas de connexion, fallback) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #fff5f5;
+      --card-bg: #ffffff;
+      --accent: #0f766e;          /* vert-bleu */
+      --accent-soft: #ccfbf1;     /* très clair */
+      --accent-danger: #b91c1c;
+      --accent-success: #15803d;
+      --text-main: #0b1f1c;
+      --text-muted: #5c7873;
+      --border: #9de6da;
+      --radius-lg: 18px;
+      --radius-sm: 11px;
+      --shadow-soft: 0 14px 30px rgba(15,118,110,0.18);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background: radial-gradient(circle at top, #c7fff6 0, #fff5f5 40%, #fff5f5 100%);
+      color: var(--text-main);
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 1100px;
+      background: linear-gradient(145deg,#ffffff,#f7fffd);
+      border-radius: 26px;
+      padding: 22px 22px 26px 22px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(15,118,110,0.10);
+    }
+
+    header { display:flex; flex-direction:column; gap:6px; margin-bottom: 14px; }
+    header h1 { font-size: 1.45rem; display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; }
+    header h1 span.badge {
+      font-size: .75rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      background: var(--accent);
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 999px;
+    }
+    header p { font-size: .9rem; color: var(--text-muted); line-height:1.4; }
+
+    .top-controls {
+      display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom: 14px;
+    }
+
+    .search-box { flex:1; min-width: 220px; position: relative; }
+    .search-box input{
+      width: 100%;
+      padding: 9px 11px 9px 30px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      outline: none;
+      font-size: .9rem;
+      background: #fff;
+    }
+    .search-box input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(15,118,110,0.18);
+    }
+    .search-box::before {
+      content:"🔎";
+      position:absolute;
+      left:8px;
+      top:50%;
+      transform: translateY(-50%);
+      font-size:.8rem;
+      opacity:.7;
+    }
+
+    .mode-toggle {
+      display:inline-flex;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      background: #e9fffb;
+    }
+    .mode-toggle button{
+      border:none;
+      background: transparent;
+      padding: 7px 12px;
+      font-size: .83rem;
+      cursor:pointer;
+      white-space:nowrap;
+      color: var(--accent);
+    }
+    .mode-toggle button.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .pill, select.pill {
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #fff;
+      padding: 7px 10px;
+      font-size: .83rem;
+      color: var(--accent);
+      cursor: pointer;
+    }
+
+    main{
+      display:grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 18px;
+    }
+    @media (max-width: 850px) { main { grid-template-columns: 1fr; } }
+
+    .card{
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px 18px 16px;
+      border: 1px solid rgba(15,118,110,0.10);
+    }
+
+    .section-title{
+      font-size: .9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .helper-text{ font-size:.82rem; color:var(--text-muted); margin-bottom: 10px; line-height:1.45; }
+
+    /* LISTE */
+    .vocab-list{
+      max-height: 470px;
+      overflow-y: auto;
+      display:flex;
+      flex-direction:column;
+      gap: 8px;
+      padding-right: 4px;
+    }
+
+    .vocab-card{
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      display:grid;
+      grid-template-columns: minmax(0,1.35fr) minmax(0,1.25fr) auto;
+      gap: 8px;
+      align-items:center;
+      background: linear-gradient(135deg,#ffffff,#e9fffb);
+      font-size: .9rem;
+    }
+    @media (max-width:700px) { .vocab-card{ grid-template-columns: 1fr; } }
+
+    .v-arabic{
+      direction: rtl;
+      text-align: right;
+      font-family: "Scheherazade New","Amiri","Noto Naskh Arabic","Traditional Arabic",serif;
+      font-size: 1.55rem;
+      line-height: 2.1rem;
+    }
+    .v-translit{ font-size: .82rem; font-style: italic; color: var(--text-muted); }
+
+    .v-french{
+      font-size: .9rem;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: #0b3a34;
+      display: inline-flex;
+      max-width: 100%;
+      word-break: break-word;
+    }
+
+    .hidden-translation{ filter: blur(4px); opacity: .35; }
+
+    .v-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      justify-content:flex-end;
+    }
+
+    button.small{
+      border-radius: 999px;
+      border: none;
+      padding: 5px 10px;
+      font-size: .78rem;
+      cursor: pointer;
+      background: var(--accent);
+      color: #fff;
+      white-space: nowrap;
+    }
+    button.small.secondary{
+      background: #fff;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+    button.small:active{ transform: translateY(1px); }
+
+    .known{ opacity: 0.42; }
+
+    /* QUIZ */
+    #quizSection{ display:none; }
+
+    .quiz-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .quiz-header span{ font-size: .82rem; color: var(--text-muted); }
+
+    .quiz-question{
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      padding: 10px 11px;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg,#ffffff,#e9fffb);
+    }
+
+    .quiz-arabic{
+      direction: rtl;
+      text-align: right;
+      font-family: "Scheherazade New","Amiri","Noto Naskh Arabic","Traditional Arabic",serif;
+      font-size: 1.8rem;
+      line-height: 2.3rem;
+      margin-bottom: 4px;
+    }
+    .quiz-translit{ font-size:.85rem; font-style: italic; color: var(--text-muted); }
+
+    .quiz-options{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .quiz-options button{
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #e9fffb;
+      padding: 7px 10px;
+      font-size: .92rem;
+      text-align: left;
+      cursor: pointer;
+    }
+    .quiz-options button.correct{
+      border-color: var(--accent-success);
+      background: #dcfce7;
+    }
+    .quiz-options button.wrong{
+      border-color: var(--accent-danger);
+      background: #fee2e2;
+    }
+
+    .quiz-feedback{ font-size:.88rem; margin-bottom: 6px; }
+    .quiz-feedback.ok{ color: var(--accent-success); }
+    .quiz-feedback.ko{ color: var(--accent-danger); }
+
+    .quiz-buttons{
+      display:flex;
+      justify-content:space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items:center;
+    }
+    .quiz-buttons button{
+      border-radius: 999px;
+      border: none;
+      padding: 7px 12px;
+      font-size: .83rem;
+      cursor: pointer;
+      background: var(--accent);
+      color: #fff;
+    }
+    .quiz-buttons button.secondary{
+      background: #fff;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+
+    footer{
+      margin-top: 16px;
+      font-size: .78rem;
+      color: var(--text-muted);
+      display:flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    footer button{
+      border-radius: 999px;
+      border: 1px solid var(--accent);
+      background: #fff;
+      padding: 5px 10px;
+      font-size: .78rem;
+      cursor: pointer;
+      color: var(--accent);
+    }
+    footer button:active{ transform: translateY(1px); }
+
+    /* Mini éditeur */
+    details { margin-top: 12px; }
+    details summary { cursor:pointer; color:var(--accent); font-weight:700; }
+    textarea#vocabEditor{
+      width: 100%;
+      min-height: 170px;
+      margin-top: 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 10px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+      line-height: 1.45;
+      background: #ffffff;
+    }
+    .editor-row{ display:flex; gap:8px; flex-wrap:wrap; margin-top: 8px; align-items:center; }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <header>
+      <h1>
+        الدَّرْسُ الأَوَّلُ: التَّحِيَّةُ وَالتَّعَارُفُ
+        <span class="badge">VOCAB + AUDIO + QUIZ</span>
+      </h1>
+      <p>
+        Clique sur « Écouter » (🔊) pour entendre l’arabe. La progression est mémorisée (mots connus + score).
+        <br>Astuce : Chrome / Edge donnent souvent les meilleures voix arabes.
+      </p>
+    </header>
+
+    <section class="top-controls">
+      <div class="search-box">
+        <input id="searchInput" type="text" placeholder="Filtrer (français, arabe)…">
+      </div>
+
+      <div class="mode-toggle">
+        <button id="modeListe" class="active" type="button">Liste</button>
+        <button id="modeQuiz" type="button">Quiz</button>
+      </div>
+
+      <select id="voiceSelect" class="pill" title="Choisir une voix (si disponible)">
+        <option value="">Voix arabe (auto)</option>
+      </select>
+
+      <button id="testVoice" class="pill" type="button" title="Tester la voix">Tester 🔊</button>
+    </section>
+
+    <main>
+      <!-- LISTE -->
+      <section class="card" id="listSection">
+        <div class="section-title">Liste</div>
+        <p class="helper-text">
+          « Afficher » montre la traduction. « Je le connais » grise le mot (mémorisé sur cet appareil).
+        </p>
+        <div id="vocabList" class="vocab-list"></div>
+
+        <details>
+          <summary>Importer / modifier le vocabulaire (JSON)</summary>
+          <div class="helper-text" style="margin-top:10px;">
+            Format : <code>[{"arabe":"...","translit":"...","fr":"..."}]</code>
+          </div>
+          <textarea id="vocabEditor"></textarea>
+          <div class="editor-row">
+            <button class="pill" id="btnLoadDefault" type="button">Recharger la liste de la leçon</button>
+            <button class="pill" id="btnApplyEditor" type="button">Appliquer</button>
+          </div>
+        </details>
+      </section>
+
+      <!-- QUIZ -->
+      <section class="card" id="quizSection">
+        <div class="section-title">Quiz</div>
+        <div class="quiz-header">
+          <span id="quizStats">0 bonnes réponses sur 0</span>
+          <span>Choisis la bonne traduction du mot arabe.</span>
+        </div>
+
+        <div class="quiz-question">
+          <div id="quizArabic" class="quiz-arabic"></div>
+          <div id="quizTranslit" class="quiz-translit"></div>
+        </div>
+
+        <div id="quizOptions" class="quiz-options"></div>
+        <div id="quizFeedback" class="quiz-feedback"></div>
+
+        <div class="quiz-buttons">
+          <button type="button" id="quizListen">Écouter</button>
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <button type="button" id="quizNext">Question suivante</button>
+            <button type="button" id="quizReset" class="secondary">Réinitialiser le score</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Progression mémorisée : mots connus + score (localStorage).</span>
+      <button type="button" id="resetAll">Tout remettre à zéro</button>
+    </footer>
+  </div>
+
+  <script>
+    /********************
+     * STOCKAGE LOCAL
+     ********************/
+    const STORAGE_KNOWN = "n2_l1_tahiyya_known";
+    const STORAGE_STATS = "n2_l1_tahiyya_quiz";
+    const STORAGE_VOCAB = "n2_l1_tahiyya_vocab";
+
+    /********************
+     * VOCABULAIRE (extrait de ta photo)
+     ********************/
+    const defaultItems = [
+      // الكلمات الجديدة
+      { arabe: "مَدِينَةٌ / مُدُنٌ", translit: "madīnatun / mudun", fr: "Ville(s)" },
+      { arabe: "اِبْتَسَمَ / يَبْتَسِمُ", translit: "ibtasama / yabtasimu", fr: "Sourire" },
+      { arabe: "صَافَحَ / يُصَافِحُ", translit: "ṣāfaḥa / yuṣāfiḥu", fr: "Serrer la main" },
+      { arabe: "اِسْمٌ / أَسْمَاءٌ", translit: "ismun / asmāʾ", fr: "Nom(s)" },
+      { arabe: "أَصْلٌ / أُصُولٌ", translit: "aṣlun / uṣūl", fr: "Origine(s)" },
+      { arabe: "أَحَبَّ / يُحِبُّ", translit: "aḥabba / yuḥibbu", fr: "Aimer" },
+      { arabe: "العُمْرُ", translit: "al-ʿumr", fr: "L’âge" },
+      { arabe: "سَنَةٌ / سَنَوَاتٌ", translit: "sanatun / sanawāt", fr: "Année(s)" },
+
+      { arabe: "كَلِمَةٌ / كَلِمَاتٌ", translit: "kalimatun / kalimāt", fr: "Mot(s)" },
+      { arabe: "عِبَارَةٌ / عِبَارَاتٌ", translit: "ʿibāratun / ʿibārāt", fr: "Expression(s)" },
+      { arabe: "دَرْسٌ / دُرُوسٌ", translit: "darsun / durūs", fr: "Cours" },
+      { arabe: "طَالِبٌ / طُلَّابٌ", translit: "ṭālibun / ṭullāb", fr: "Étudiant(s)" },
+      { arabe: "جَدِيدٌ / جُدُدٌ", translit: "jadīdun / judud", fr: "Nouveau(x)" },
+      { arabe: "دَرَسَ / يَدْرُسُ", translit: "darasa / yadrusu", fr: "Étudier" },
+      { arabe: "لُغَةٌ / لُغَاتٌ", translit: "lughatun / lughāt", fr: "Langue(s)" },
+      { arabe: "مَعْهَدٌ / مَعَاهِدُ", translit: "maʿhadun / maʿāhid", fr: "Institut(s)" },
+
+      // العبارات الجديدة
+      { arabe: "مَرْحَبًا بِكِ!", translit: "marḥaban biki", fr: "Sois la bienvenue ! (fém.)" },
+      { arabe: "أَهْلًا وَسَهْلًا!", translit: "ahlan wa sahlan", fr: "Sois la bienvenue ! / Bienvenue !" },
+      { arabe: "كَيْفَ أَنْتِ؟ / كَيْفَ حَالُكِ؟", translit: "kayfa anti? / kayfa ḥāluki?", fr: "Comment vas-tu ? (fém.)" },
+      { arabe: "مَا ...؟", translit: "mā ...?", fr: "Quel(le) est… ?" },
+      { arabe: "مِنْ أَيْنَ ...؟", translit: "min ayna ...?", fr: "D’où… ?" },
+    ];
+
+    // Items actifs (peuvent être remplacés via l’éditeur)
+    let allItems = [];
+
+    /********************
+     * AUDIO – Web Speech API
+     ********************/
+    let allVoices = [];
+    let selectedVoice = null;
+
+    const voiceSelect = document.getElementById("voiceSelect");
+    const testVoiceBtn = document.getElementById("testVoice");
+
+    function populateVoices() {
+      if (!("speechSynthesis" in window)) return;
+      allVoices = speechSynthesis.getVoices() || [];
+
+      const arabicVoices = allVoices.filter(v =>
+        (v.lang && v.lang.toLowerCase().startsWith("ar")) ||
+        (v.name && v.name.toLowerCase().includes("arab"))
+      );
+
+      voiceSelect.innerHTML = `<option value="">Voix arabe (auto)</option>`;
+      arabicVoices.forEach((v, i) => {
+        const opt = document.createElement("option");
+        opt.value = String(i);
+        opt.textContent = `${v.name} — ${v.lang}`;
+        voiceSelect.appendChild(opt);
+      });
+
+      selectedVoice = arabicVoices[0] || null;
+    }
+
+    function getChosenVoice() {
+      const idx = voiceSelect.value;
+      const arabicVoices = allVoices.filter(v =>
+        (v.lang && v.lang.toLowerCase().startsWith("ar")) ||
+        (v.name && v.name.toLowerCase().includes("arab"))
+      );
+      if (idx === "" || idx == null) return arabicVoices[0] || null;
+      return arabicVoices[Number(idx)] || arabicVoices[0] || null;
+    }
+
+    function cleanForSpeech(ar) {
+      // Enlève séparateurs et symboles qui perturbent l’audio
+      return (ar || "")
+        .replace(/[\/]/g, "، ")
+        .replace(/[≠]/g, " ليس ")
+        .replace(/[()]/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function speakArabic(text) {
+      if (!("speechSynthesis" in window)) return;
+      const utter = new SpeechSynthesisUtterance(cleanForSpeech(text));
+      utter.lang = "ar-SA";
+
+      const v = selectedVoice || getChosenVoice();
+      if (v) utter.voice = v;
+
+      utter.rate = 0.9;
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utter);
+    }
+
+    if ("speechSynthesis" in window) {
+      speechSynthesis.onvoiceschanged = populateVoices;
+      populateVoices();
+    }
+
+    testVoiceBtn.onclick = () => speakArabic("مَرْحَبًا بِكِ");
+    voiceSelect.onchange = () => { selectedVoice = getChosenVoice(); };
+
+    /********************
+     * MÉMOIRE : mots connus + score
+     ********************/
+    let knownMap = {};
+    let score = 0;
+    let total = 0;
+
+    function loadKnown() {
+      try { knownMap = JSON.parse(localStorage.getItem(STORAGE_KNOWN) || "{}") || {}; }
+      catch(e){ knownMap = {}; }
+    }
+    function saveKnown() {
+      try { localStorage.setItem(STORAGE_KNOWN, JSON.stringify(knownMap)); } catch(e){}
+    }
+
+    function loadStats() {
+      try {
+        const obj = JSON.parse(localStorage.getItem(STORAGE_STATS) || "null");
+        if (obj && typeof obj.score === "number" && typeof obj.total === "number") {
+          score = obj.score; total = obj.total;
+        }
+      } catch(e){}
+    }
+    function saveStats() {
+      try { localStorage.setItem(STORAGE_STATS, JSON.stringify({score, total})); } catch(e){}
+    }
+
+    function saveVocab() {
+      try { localStorage.setItem(STORAGE_VOCAB, JSON.stringify(allItems)); } catch(e){}
+    }
+    function loadVocab() {
+      try {
+        const raw = localStorage.getItem(STORAGE_VOCAB);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length) return parsed;
+        }
+      } catch(e){}
+      return null;
+    }
+
+    /********************
+     * LISTE
+     ********************/
+    const vocabListEl = document.getElementById("vocabList");
+    const searchInput = document.getElementById("searchInput");
+
+    function renderList() {
+      const query = (searchInput.value || "").toLowerCase().trim();
+      vocabListEl.innerHTML = "";
+
+      const filtered = allItems.filter(item => {
+        const fr = (item.fr || "").toLowerCase();
+        const ar = (item.arabe || "");
+        const tr = (item.translit || "").toLowerCase();
+        return !query || fr.includes(query) || ar.includes(query) || tr.includes(query);
+      });
+
+      if (!filtered.length) {
+        const p = document.createElement("p");
+        p.textContent = "Aucun mot trouvé.";
+        p.style.fontSize = ".9rem";
+        p.style.color = "#666";
+        vocabListEl.appendChild(p);
+        return;
+      }
+
+      filtered.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "vocab-card";
+
+        const col1 = document.createElement("div");
+        col1.innerHTML = `
+          <div class="v-arabic">${item.arabe}</div>
+          <div class="v-translit">${item.translit || ""}</div>
+        `;
+
+        const col2 = document.createElement("div");
+        const frSpan = document.createElement("div");
+        frSpan.className = "v-french hidden-translation";
+        frSpan.textContent = item.fr || "";
+        col2.appendChild(frSpan);
+
+        const col3 = document.createElement("div");
+        col3.className = "v-actions";
+
+        const listenBtn = document.createElement("button");
+        listenBtn.className = "small";
+        listenBtn.textContent = "Écouter";
+        listenBtn.onclick = () => speakArabic(item.arabe);
+
+        const toggleBtn = document.createElement("button");
+        toggleBtn.className = "small secondary";
+        toggleBtn.textContent = "Afficher";
+        toggleBtn.onclick = () => {
+          frSpan.classList.toggle("hidden-translation");
+          toggleBtn.textContent = frSpan.classList.contains("hidden-translation") ? "Afficher" : "Cacher";
+        };
+
+        const knowBtn = document.createElement("button");
+        knowBtn.className = "small secondary";
+        const key = item.arabe;
+        const isKnown = !!knownMap[key];
+        if (isKnown) { card.classList.add("known"); knowBtn.textContent = "Je ne le connais plus"; }
+        else { knowBtn.textContent = "Je le connais"; }
+
+        knowBtn.onclick = () => {
+          const currentlyKnown = !!knownMap[key];
+          if (currentlyKnown) {
+            delete knownMap[key];
+            card.classList.remove("known");
+            knowBtn.textContent = "Je le connais";
+          } else {
+            knownMap[key] = true;
+            card.classList.add("known");
+            knowBtn.textContent = "Je ne le connais plus";
+          }
+          saveKnown();
+        };
+
+        col3.append(listenBtn, toggleBtn, knowBtn);
+        card.append(col1, col2, col3);
+        vocabListEl.appendChild(card);
+      });
+    }
+
+    /********************
+     * QUIZ
+     ********************/
+    const quizSection = document.getElementById("quizSection");
+    const listSection = document.getElementById("listSection");
+    const modeListeBtn = document.getElementById("modeListe");
+    const modeQuizBtn = document.getElementById("modeQuiz");
+
+    const quizArabicEl = document.getElementById("quizArabic");
+    const quizTranslitEl = document.getElementById("quizTranslit");
+    const quizOptionsEl = document.getElementById("quizOptions");
+    const quizFeedbackEl = document.getElementById("quizFeedback");
+    const quizStatsEl = document.getElementById("quizStats");
+    const quizListenBtn = document.getElementById("quizListen");
+    const quizNextBtn = document.getElementById("quizNext");
+    const quizResetBtn = document.getElementById("quizReset");
+    const resetAllBtn = document.getElementById("resetAll");
+
+    let currentQuestion, currentOptions;
+    let questionAnswered = false;
+
+    function shuffle(arr) {
+      return arr.map(a => [Math.random(), a]).sort((a,b)=>a[0]-b[0]).map(a=>a[1]);
+    }
+
+    function updateQuizStats() {
+      quizStatsEl.textContent = `${score} bonnes réponses sur ${total}`;
+      saveStats();
+    }
+
+    function pickQuestion() {
+      if (!allItems.length) return;
+
+      questionAnswered = false;
+      quizFeedbackEl.textContent = "";
+      quizFeedbackEl.className = "quiz-feedback";
+
+      const q = allItems[Math.floor(Math.random() * allItems.length)];
+      currentQuestion = q;
+
+      const others = shuffle(allItems.filter(x => x !== q)).slice(0, 3);
+      currentOptions = shuffle([q, ...others]);
+
+      quizArabicEl.textContent = q.arabe;
+      quizTranslitEl.textContent = q.translit || "";
+
+      quizOptionsEl.innerHTML = "";
+      currentOptions.forEach((opt, i) => {
+        const btn = document.createElement("button");
+        btn.textContent = opt.fr;
+        btn.onclick = () => answerQuiz(i, btn);
+        quizOptionsEl.appendChild(btn);
+      });
+    }
+
+    function answerQuiz(i, btn) {
+      if (questionAnswered) return;
+      questionAnswered = true;
+      total++;
+
+      const correct = currentOptions[i] === currentQuestion;
+      if (correct) score++;
+
+      quizFeedbackEl.textContent = correct
+        ? "✔️ Bravo !"
+        : `❌ Mauvaise réponse. La bonne réponse était : « ${currentQuestion.fr} ».`;
+      quizFeedbackEl.className = "quiz-feedback " + (correct ? "ok" : "ko");
+
+      const buttons = quizOptionsEl.querySelectorAll("button");
+      currentOptions.forEach((opt, index) => {
+        if (opt === currentQuestion) buttons[index].classList.add("correct");
+      });
+      if (!correct) btn.classList.add("wrong");
+
+      updateQuizStats();
+    }
+
+    quizListenBtn.onclick = () => currentQuestion && speakArabic(currentQuestion.arabe);
+    quizNextBtn.onclick = pickQuestion;
+    quizResetBtn.onclick = () => { score = 0; total = 0; updateQuizStats(); pickQuestion(); };
+
+    /********************
+     * MODES + RESET
+     ********************/
+    modeListeBtn.onclick = () => {
+      modeListeBtn.classList.add("active");
+      modeQuizBtn.classList.remove("active");
+      listSection.style.display = "block";
+      quizSection.style.display = "none";
+    };
+
+    modeQuizBtn.onclick = () => {
+      modeQuizBtn.classList.add("active");
+      modeListeBtn.classList.remove("active");
+      listSection.style.display = "none";
+      quizSection.style.display = "block";
+      pickQuestion();
+    };
+
+    searchInput.oninput = renderList;
+
+    resetAllBtn.onclick = () => {
+      knownMap = {};
+      score = 0;
+      total = 0;
+      try {
+        localStorage.removeItem(STORAGE_KNOWN);
+        localStorage.removeItem(STORAGE_STATS);
+        // On garde le vocab personnalisé sauf si tu veux l'effacer aussi :
+        // localStorage.removeItem(STORAGE_VOCAB);
+      } catch(e){}
+      updateQuizStats();
+      renderList();
+    };
+
+    /********************
+     * ÉDITEUR VOCAB
+     ********************/
+    const vocabEditor = document.getElementById("vocabEditor");
+    const btnLoadDefault = document.getElementById("btnLoadDefault");
+    const btnApplyEditor = document.getElementById("btnApplyEditor");
+
+    function loadEditorFromItems() {
+      vocabEditor.value = JSON.stringify(allItems, null, 2);
+    }
+
+    function applyEditor() {
+      try {
+        const parsed = JSON.parse(vocabEditor.value);
+        if (!Array.isArray(parsed)) throw new Error("Le JSON doit être un tableau.");
+
+        const cleaned = parsed
+          .filter(x => x && typeof x.arabe === "string" && typeof x.fr === "string")
+          .map(x => ({
+            arabe: x.arabe.trim(),
+            translit: (typeof x.translit === "string" ? x.translit.trim() : ""),
+            fr: x.fr.trim()
+          }))
+          .filter(x => x.arabe && x.fr);
+
+        if (!cleaned.length) throw new Error("Liste vide ou invalide.");
+
+        allItems = cleaned;
+        saveVocab();
+        renderList();
+        pickQuestion();
+        loadEditorFromItems();
+      } catch (e) {
+        alert("JSON invalide : " + e.message);
+      }
+    }
+
+    btnLoadDefault.onclick = () => {
+      allItems = [...defaultItems];
+      saveVocab();
+      renderList();
+      pickQuestion();
+      loadEditorFromItems();
+    };
+
+    btnApplyEditor.onclick = applyEditor;
+
+    /********************
+     * INIT
+     ********************/
+    function init() {
+      loadKnown();
+      loadStats();
+
+      // Vocab : charger version sauvegardée si existe
+      const saved = loadVocab();
+      allItems = saved ? saved : [...defaultItems];
+
+      renderList();
+      updateQuizStats();
+      pickQuestion();
+      loadEditorFromItems();
+    }
+
+    init();
+  </script>
+</body>
+
+</html>
 
